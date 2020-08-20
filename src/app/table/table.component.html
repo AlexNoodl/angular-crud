@@ -1,0 +1,47 @@
+<h1>Список сотрудников</h1>
+
+<div>
+  <input type="text" filter="Filter" [(ngModel)]="searchString" >
+</div>
+
+<div *ngIf="matesService.mates.length; else empty">
+    <table>
+      <thead>
+      <tr>
+        <th>#</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Age</th>
+        <th>Aggregator</th>
+        <th>Actions</th>
+      </tr>
+      </thead>
+
+      <tbody>
+      <tr *ngFor="let mate of matesService.mates | matesFilter: searchString; let idx = index">
+        <td>{{idx + 1}}</td>
+        <td>{{mate.name.first}}</td>
+        <td>{{mate.name.last}}</td>
+        <td>{{mate.age}}</td>
+        <td>
+          {{mate.name.first | slice:0:1}}.{{mate.name.last | slice: 0: 1}} - {{mate.email}}
+        </td>
+        <td>
+          <div class="dflex">
+            <button class="btn btn-small" [routerLink]="['/edit', mate.guid]">Edit</button>
+            <button class="btn btn-small" (click)="removeMate(mate.guid)">Delete</button>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+<button
+  type="button"
+  class="btn"
+  routerLink="/create"
+>Создать</button>
+
+<ng-template #empty>
+  <p>Сотрудников пока нет</p>
+</ng-template>
